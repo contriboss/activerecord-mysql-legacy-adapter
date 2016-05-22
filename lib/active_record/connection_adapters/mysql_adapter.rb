@@ -1,4 +1,4 @@
-require 'active_record/connection_adapters/abstract_adapter'
+require 'active_record/connection_adapters/abstract_mysql_adapter'
 require 'active_record/connection_adapters/statement_pool'
 require 'active_support/core_ext/hash/keys'
 
@@ -34,7 +34,8 @@ module ActiveRecord
 
       default_flags = Mysql.const_defined?(:CLIENT_MULTI_RESULTS) ? Mysql::CLIENT_MULTI_RESULTS : 0
       default_flags |= Mysql::CLIENT_FOUND_ROWS if Mysql.const_defined?(:CLIENT_FOUND_ROWS)
-      ConnectionAdapters::MysqlAdapter.new(mysql, logger, config)
+      options = [host, username, password, database, port, socket, default_flags]
+      ConnectionAdapters::MysqlAdapter.new(mysql, logger, options, config)
     rescue Mysql::Error => error
       if error.message.include?("Unknown database")
         raise ActiveRecord::NoDatabaseError
@@ -66,7 +67,7 @@ module ActiveRecord
     # * <tt>:sslcapath</tt> - Necessary to use MySQL with an SSL connection.
     # * <tt>:sslcipher</tt> - Necessary to use MySQL with an SSL connection.
     #
-    class MysqlAdapter < ActiveRecord::ConnectionAdapters::AbstractAdapter
+    class MysqlAdapter < ActiveRecord::ConnectionAdapters::AbstractMysqlAdapter
       ADAPTER_NAME = 'MySQL'.freeze
 
       class StatementPool < ConnectionAdapters::StatementPool
@@ -77,10 +78,11 @@ module ActiveRecord
         end
       end
 
-      def initialize(connection, logger, config)
+      def initialize(connection, logger, connection_options, config)
         super
         @statements = StatementPool.new(self.class.type_cast_config_to_integer(config.fetch(:statement_limit) { 1000 }))
         @client_encoding = nil
+        @connection_options = connection_options
         connect
       end
 
@@ -441,7 +443,7 @@ module ActiveRecord
         @connection.options(Mysql::OPT_READ_TIMEOUT, @config[:read_timeout]) if @config[:read_timeout]
         @connection.options(Mysql::OPT_WRITE_TIMEOUT, @config[:write_timeout]) if @config[:write_timeout]
 
-        @connection.real_connect(*@config.values.map(&:to_s))
+        @connection.real_connect(*@connection_options)
 
         # reconnect must be set after real_connect is called, because real_connect sets it to false internally
         @connection.reconnect = !!@config[:reconnect] if @connection.respond_to?(:reconnect=)
