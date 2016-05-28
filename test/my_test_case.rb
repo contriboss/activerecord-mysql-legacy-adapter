@@ -21,8 +21,8 @@ end
 
 class ActiveSupport::TestCase
   # include ActiveRecord::TestFixtures
-  include ActiveRecord::ValidationsRepairHelper
-  include ActiveSupport::Testing::MethodCallAssertions
+  include ValidationsRepairHelper
+  # include ActiveSupport::Testing::MethodCallAssertions
 
   # self.fixture_path = FIXTURES_ROOT
   # self.use_instantiated_fixtures  = false
@@ -139,7 +139,7 @@ end
 
 class MysqlTestCase < TestCase
   def self.run(*args)
-    super if current_adapter?(:MysqlAdapter)
+    super
   end
 end
 
