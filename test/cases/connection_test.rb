@@ -1,6 +1,4 @@
-require 'support/connection_helper'
 require 'test_helper'
-
 require 'support/ddl_helper'
 
 class MysqlConnectionTest < MyTestCase

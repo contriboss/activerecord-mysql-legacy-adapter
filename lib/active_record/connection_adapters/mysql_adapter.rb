@@ -321,6 +321,11 @@ module ActiveRecord
         register_class_with_precision m, %r(time)i,     Fields::Time
       end
 
+      # Executes the SQL statement in the context of this connection.
+      def execute(sql, name = nil)
+        log(sql, name) { @connection.query(sql) }
+      end
+
       def exec_without_stmt(sql, name = 'SQL') # :nodoc:
         # Some queries, like SHOW CREATE TABLE don't work through the prepared
         # statement API. For those queries, we need to use this method. :'(
