@@ -1,4 +1,5 @@
 require 'active_support/test_case'
+require 'active_support/testing/stream'
 
 module ValidationsRepairHelper
   extend ActiveSupport::Concern
@@ -40,16 +41,23 @@ class SQLCounter
 
   self.clear_log
 
-  self.ignored_sql = [/^PRAGMA/, /^SELECT currval/, /^SELECT CAST/, /^SELECT @@IDENTITY/, /^SELECT @@ROWCOUNT/, /^SAVEPOINT/, /^ROLLBACK TO SAVEPOINT/, /^RELEASE SAVEPOINT/, /^SHOW max_identifier_length/, /^BEGIN/, /^COMMIT/]
-
-  # FIXME: this needs to be refactored so specific database can add their own
-  # ignored SQL, or better yet, use a different notification for the queries
-  # instead examining the SQL content.
-  mysql_ignored      = [/^SHOW FULL TABLES/i, /^SHOW FULL FIELDS/, /^SHOW CREATE TABLE /i, /^SHOW VARIABLES /, /^\s*SELECT (?:column_name|table_name)\b.*\bFROM information_schema\.(?:key_column_usage|tables)\b/im]
-
-  [oracle_ignored, mysql_ignored, postgresql_ignored, sqlite3_ignored].each do |db_ignored_sql|
-    ignored_sql.concat db_ignored_sql
-  end
+  self.ignored_sql = [
+    /^PRAGMA/,
+    /^SELECT currval/,
+    /^SELECT CAST/,
+    /^SELECT @@IDENTITY/,
+    /^SELECT @@ROWCOUNT/,
+    /^SAVEPOINT/,
+    /^ROLLBACK TO SAVEPOINT/,
+    /^RELEASE SAVEPOINT/,
+    /^SHOW max_identifier_length/,
+    /^BEGIN/,
+    /^COMMIT/,/^SHOW FULL TABLES/i,
+    /^SHOW FULL FIELDS/,
+    /^SHOW CREATE TABLE /i,
+    /^SHOW VARIABLES /,
+    /^\s*SELECT (?:column_name|table_name)\b.*\bFROM information_schema\.(?:key_column_usage|tables)\b/im
+  ]
 
   attr_reader :ignore
 
@@ -67,9 +75,6 @@ class SQLCounter
     self.class.log_all << sql
     self.class.log << sql unless ignore =~ sql
   end
-end
-
-ActiveSupport::Notifications.subscribe('sql.active_record', SQLCounter.new)
 end
 
 class TestCase < ActiveSupport::TestCase #:nodoc:
