@@ -35,6 +35,10 @@ module ActiveRecord
       default_flags = Mysql.const_defined?(:CLIENT_MULTI_RESULTS) ? Mysql::CLIENT_MULTI_RESULTS : 0
       default_flags |= Mysql::CLIENT_FOUND_ROWS if Mysql.const_defined?(:CLIENT_FOUND_ROWS)
       options = [host, username, password, database, port, socket, default_flags]
+
+      dbh = Mysql.real_connect(*options)
+      puts "Server version: " + dbh.get_server_info
+
       ConnectionAdapters::MysqlAdapter.new(mysql, logger, options, config)
     rescue Mysql::Error => error
       if error.message.include?("Unknown database")
@@ -67,7 +71,7 @@ module ActiveRecord
     # * <tt>:sslcapath</tt> - Necessary to use MySQL with an SSL connection.
     # * <tt>:sslcipher</tt> - Necessary to use MySQL with an SSL connection.
     #
-    class MysqlAdapter < ActiveRecord::ConnectionAdapters::AbstractMysqlAdapter
+    class MysqlAdapter < AbstractMysqlAdapter
       ADAPTER_NAME = 'MySQL'.freeze
 
       class StatementPool < ConnectionAdapters::StatementPool
@@ -192,43 +196,43 @@ module ActiveRecord
       #   https://github.com/tmtm/ruby-mysql/blob/master/lib/mysql/charset.rb
       # Author: TOMITA Masahiro <tommy@tmtm.org>
       ENCODINGS = {
-          "armscii8" => nil,
-          "ascii"    => Encoding::US_ASCII,
-          "big5"     => Encoding::Big5,
-          "binary"   => Encoding::ASCII_8BIT,
-          "cp1250"   => Encoding::Windows_1250,
-          "cp1251"   => Encoding::Windows_1251,
-          "cp1256"   => Encoding::Windows_1256,
-          "cp1257"   => Encoding::Windows_1257,
-          "cp850"    => Encoding::CP850,
-          "cp852"    => Encoding::CP852,
-          "cp866"    => Encoding::IBM866,
-          "cp932"    => Encoding::Windows_31J,
-          "dec8"     => nil,
-          "eucjpms"  => Encoding::EucJP_ms,
-          "euckr"    => Encoding::EUC_KR,
-          "gb2312"   => Encoding::EUC_CN,
-          "gbk"      => Encoding::GBK,
-          "geostd8"  => nil,
-          "greek"    => Encoding::ISO_8859_7,
-          "hebrew"   => Encoding::ISO_8859_8,
-          "hp8"      => nil,
-          "keybcs2"  => nil,
-          "koi8r"    => Encoding::KOI8_R,
-          "koi8u"    => Encoding::KOI8_U,
-          "latin1"   => Encoding::ISO_8859_1,
-          "latin2"   => Encoding::ISO_8859_2,
-          "latin5"   => Encoding::ISO_8859_9,
-          "latin7"   => Encoding::ISO_8859_13,
-          "macce"    => Encoding::MacCentEuro,
-          "macroman" => Encoding::MacRoman,
-          "sjis"     => Encoding::SHIFT_JIS,
-          "swe7"     => nil,
-          "tis620"   => Encoding::TIS_620,
-          "ucs2"     => Encoding::UTF_16BE,
-          "ujis"     => Encoding::EucJP_ms,
-          "utf8"     => Encoding::UTF_8,
-          "utf8mb4"  => Encoding::UTF_8,
+        "armscii8" => nil,
+        "ascii"    => Encoding::US_ASCII,
+        "big5"     => Encoding::Big5,
+        "binary"   => Encoding::ASCII_8BIT,
+        "cp1250"   => Encoding::Windows_1250,
+        "cp1251"   => Encoding::Windows_1251,
+        "cp1256"   => Encoding::Windows_1256,
+        "cp1257"   => Encoding::Windows_1257,
+        "cp850"    => Encoding::CP850,
+        "cp852"    => Encoding::CP852,
+        "cp866"    => Encoding::IBM866,
+        "cp932"    => Encoding::Windows_31J,
+        "dec8"     => nil,
+        "eucjpms"  => Encoding::EucJP_ms,
+        "euckr"    => Encoding::EUC_KR,
+        "gb2312"   => Encoding::EUC_CN,
+        "gbk"      => Encoding::GBK,
+        "geostd8"  => nil,
+        "greek"    => Encoding::ISO_8859_7,
+        "hebrew"   => Encoding::ISO_8859_8,
+        "hp8"      => nil,
+        "keybcs2"  => nil,
+        "koi8r"    => Encoding::KOI8_R,
+        "koi8u"    => Encoding::KOI8_U,
+        "latin1"   => Encoding::ISO_8859_1,
+        "latin2"   => Encoding::ISO_8859_2,
+        "latin5"   => Encoding::ISO_8859_9,
+        "latin7"   => Encoding::ISO_8859_13,
+        "macce"    => Encoding::MacCentEuro,
+        "macroman" => Encoding::MacRoman,
+        "sjis"     => Encoding::SHIFT_JIS,
+        "swe7"     => nil,
+        "tis620"   => Encoding::TIS_620,
+        "ucs2"     => Encoding::UTF_16BE,
+        "ujis"     => Encoding::EucJP_ms,
+        "utf8"     => Encoding::UTF_8,
+        "utf8mb4"  => Encoding::UTF_8,
       }
 
       # Get the client encoding for this database
@@ -236,8 +240,8 @@ module ActiveRecord
         return @client_encoding if @client_encoding
 
         result = exec_query(
-            "select @@character_set_client",
-            'SCHEMA')
+          "select @@character_set_client",
+          'SCHEMA')
         @client_encoding = ENCODINGS[result.rows.last.last]
       end
 
@@ -262,13 +266,13 @@ module ActiveRecord
           def cast_value(value)
             if Mysql::Time === value
               new_time(
-                  value.year,
-                  value.month,
-                  value.day,
-                  value.hour,
-                  value.minute,
-                  value.second,
-                  value.second_part)
+                value.year,
+                value.month,
+                value.day,
+                value.hour,
+                value.minute,
+                value.second,
+                value.second_part)
             else
               super
             end
@@ -279,13 +283,13 @@ module ActiveRecord
           def cast_value(value)
             if Mysql::Time === value
               new_time(
-                  2000,
-                  01,
-                  01,
-                  value.hour,
-                  value.minute,
-                  value.second,
-                  value.second_part)
+                2000,
+                01,
+                01,
+                value.hour,
+                value.minute,
+                value.second,
+                value.second_part)
             else
               super
             end
@@ -393,7 +397,7 @@ module ActiveRecord
             stmt = @connection.prepare(sql)
           else
             cache = @statements[sql] ||= {
-                :stmt => @connection.prepare(sql)
+              :stmt => @connection.prepare(sql)
             }
             stmt = cache[:stmt]
           end
