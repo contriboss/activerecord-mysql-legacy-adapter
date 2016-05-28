@@ -3,7 +3,7 @@ require 'test_helper'
 
 require 'support/ddl_helper'
 
-class MysqlConnectionTest < ActiveRecord::MysqlTestCase
+class MysqlConnectionTest < MyTestCase
   include ConnectionHelper
   include DdlHelper
 

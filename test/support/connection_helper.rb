@@ -9,7 +9,7 @@ module ConnectionHelper
       test_root = File.expand_path('../../', __FILE__)
       config_file = test_root + '/config.yml'
 
-      YAML.load_file(config_file) if File.exists? config_file
+      YAML.load_file(config_file) if File.exist? config_file
     end
   end
 end
