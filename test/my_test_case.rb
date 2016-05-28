@@ -143,7 +143,7 @@ class MysqlTestCase < TestCase
   end
 end
 
-class MyTestCase < ActiveSupport::TestCase
+class MyTestCase < MysqlTestCase
 # TODO
 end
 

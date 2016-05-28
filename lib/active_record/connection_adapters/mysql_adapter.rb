@@ -33,9 +33,6 @@ module ActiveRecord
       default_flags |= Mysql::CLIENT_FOUND_ROWS if Mysql.const_defined?(:CLIENT_FOUND_ROWS)
       options = [host, username, password, database, port, socket, default_flags]
 
-      dbh = Mysql.real_connect(*options)
-      puts "Server version: " + dbh.get_server_info
-
       ConnectionAdapters::MysqlAdapter.new(mysql, logger, options, config)
     rescue Mysql::Error => error
       if error.message.include?("Unknown database")
@@ -68,7 +65,7 @@ module ActiveRecord
     # * <tt>:sslcapath</tt> - Necessary to use MySQL with an SSL connection.
     # * <tt>:sslcipher</tt> - Necessary to use MySQL with an SSL connection.
     #
-    class MysqlAdapter < AbstractMysqlAdapter
+    class MysqlAdapter < AbstractAdapter
       ADAPTER_NAME = 'MySQL'.freeze
 
       class StatementPool < ConnectionAdapters::StatementPool
@@ -80,7 +77,7 @@ module ActiveRecord
       end
 
       def initialize(connection, logger, connection_options, config)
-        super
+        super(connection, logger, config)
         @statements = StatementPool.new(self.class.type_cast_config_to_integer(config.fetch(:statement_limit) { 1000 }))
         @client_encoding = nil
         @connection_options = connection_options
@@ -455,7 +452,50 @@ module ActiveRecord
       # Many Rails applications monkey-patch a replacement of the configure_connection method
       # and don't call 'super', so leave this here even though it looks superfluous.
       def configure_connection
-        super
+        variables = @config.fetch(:variables, {}).stringify_keys
+
+        # By default, MySQL 'where id is null' selects the last inserted id; Turn this off.
+        variables['sql_auto_is_null'] = 0
+
+        # Increase timeout so the server doesn't disconnect us.
+        wait_timeout = @config[:wait_timeout]
+        wait_timeout = 2147483 unless wait_timeout.is_a?(Fixnum)
+        variables['wait_timeout'] = self.class.type_cast_config_to_integer(wait_timeout)
+
+        defaults = [':default', :default].to_set
+
+        # Make MySQL reject illegal values rather than truncating or blanking them, see
+        # http://dev.mysql.com/doc/refman/5.7/en/sql-mode.html#sqlmode_strict_all_tables
+        # If the user has provided another value for sql_mode, don't replace it.
+        unless variables.has_key?('sql_mode') || defaults.include?(@config[:strict])
+          variables['sql_mode'] = strict_mode? ? 'STRICT_ALL_TABLES' : ''
+        end
+
+        # NAMES does not have an equals sign, see
+        # http://dev.mysql.com/doc/refman/5.7/en/set-statement.html#id944430
+        # (trailing comma because variable_assignments will always have content)
+        if @config[:encoding]
+          encoding = "NAMES #{@config[:encoding]}"
+          encoding << " COLLATE #{@config[:collation]}" if @config[:collation]
+          encoding << ", "
+        end
+
+        # Gather up all of the SET variables...
+        variable_assignments = variables.map do |k, v|
+          if defaults.include?(v)
+            "@@SESSION.#{k} = DEFAULT" # Sets the value to the global or compile default
+          elsif !v.nil?
+            "@@SESSION.#{k} = #{quote(v)}"
+          end
+          # or else nil; compact to clear nils out
+        end.compact.join(', ')
+
+        # ...and send them all in one query
+        @connection.query  "SET #{encoding} #{variable_assignments}"
+      end
+
+      def strict_mode?
+        self.class.type_cast_config_to_boolean(@config.fetch(:strict, true))
       end
 
       def select(sql, name = nil, binds = [])
