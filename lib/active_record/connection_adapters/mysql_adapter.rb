@@ -1,6 +1,7 @@
 require 'active_record/connection_adapters/abstract_mysql_adapter'
 require 'active_record/connection_adapters/statement_pool'
 require 'active_support/core_ext/hash/keys'
+require File.expand_path '../mysql_abstract_adapter', __FILE__
 
 class Mysql # :nodoc: all
   class Time
@@ -65,7 +66,7 @@ module ActiveRecord
     # * <tt>:sslcapath</tt> - Necessary to use MySQL with an SSL connection.
     # * <tt>:sslcipher</tt> - Necessary to use MySQL with an SSL connection.
     #
-    class MysqlAdapter < AbstractAdapter
+    class MysqlAdapter < MysqlAbstractAdapter
       ADAPTER_NAME = 'MySQL'.freeze
 
       class StatementPool < ConnectionAdapters::StatementPool
@@ -77,11 +78,16 @@ module ActiveRecord
       end
 
       def initialize(connection, logger, connection_options, config)
-        super(connection, logger, config)
+        super
         @statements = StatementPool.new(self.class.type_cast_config_to_integer(config.fetch(:statement_limit) { 1000 }))
         @client_encoding = nil
         @connection_options = connection_options
         connect
+      end
+
+      # FIXME: add implementation similar to the one in Mysql2
+      def add_sql_comment!(arg1, arg2)
+        nil
       end
 
       # Returns true, since this connection adapter supports prepared statement

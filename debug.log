@@ -68,3 +68,4 @@
 )[0m
   [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE ex[0m
   [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (42.2ms)[0m  [1m[35mCREATE TABLE `binary_fields` (`id` int AUTO_INCREMENT PRIMARY KEY, `var_binary` varbinary(255), `var_binary_large` varbinary(4095), `tiny_blob` tinyblob, `normal_blob` blob, `medium_blob` mediumblob, `long_blob` longblob, `tiny_text` tinytext, `normal_text` text, `medium_text` mediumtext, `long_text` longtext) ENGINE=InnoDB[0m
