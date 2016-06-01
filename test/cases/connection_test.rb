@@ -66,11 +66,6 @@ class MysqlConnectionTest < MyTestCase
     assert @connection.active?
   end
 
-  def test_bind_value_substitute
-    bind_param = @connection.substitute_at('foo')
-    assert_equal Arel.sql('?'), bind_param.to_sql
-  end
-
   def test_exec_no_binds
     with_example_table do
       result = @connection.exec_query('SELECT id, data FROM ex')

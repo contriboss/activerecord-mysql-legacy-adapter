@@ -171,7 +171,7 @@ module ActiveRecord
       # DATABASE STATEMENTS ======================================
       #++
 
-      def select_all(arel, name = nil, binds = [])
+      def select_all(arel, name = nil, binds = [], preparable: nil)
         if ExplainRegistry.collect? && prepared_statements
           unprepared_statement { super }
         else
