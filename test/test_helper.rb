@@ -43,3 +43,4 @@ ActiveRecord::Base.time_zone_aware_types << :time
 
 load_schema
 
+require "mocha/setup"

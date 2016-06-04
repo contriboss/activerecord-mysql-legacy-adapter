@@ -593,8 +593,8 @@ module ActiveRecord
         end
       end
 
-      def create_table(table_name, options = {}) #:nodoc:
-        super(table_name, options.reverse_merge(:options => "ENGINE=InnoDB"))
+      def create_table(table_name, **options) #:nodoc:
+        super(table_name, options: "ENGINE=InnoDB", **options)
       end
 
       def bulk_change_table(table_name, operations) #:nodoc:
