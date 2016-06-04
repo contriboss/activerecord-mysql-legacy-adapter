@@ -145,8 +145,4 @@ class MysqlTestCase < TestCase
   end
 end
 
-class MyTestCase < MysqlTestCase
-# TODO
-end
-
 

@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'support/ddl_helper'
 
-class MysqlConnectionTest < MyTestCase
+class MysqlConnectionTest < MysqlTestCase
   include ConnectionHelper
   include DdlHelper
 

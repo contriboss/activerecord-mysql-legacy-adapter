@@ -4,7 +4,7 @@ require 'minitest/autorun'
 require 'active_support/logger'
 require 'activerecord/mysql/adapter'
 require 'support/connection_helper'
-require 'my_test_case'
+require 'mysql_test_case'
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
