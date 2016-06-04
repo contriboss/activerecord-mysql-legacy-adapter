@@ -328,3 +328,489 @@ END
   [1m[35mSQL (0.9ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
   [1m[35m (0.3ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
   [1m[35m (0.7ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35m (47.2ms)[0m  [1m[35mDROP TABLE `binary_fields`[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE TABLE `binary_fields` (`id` int AUTO_INCREMENT PRIMARY KEY, `var_binary` varbinary(255), `var_binary_large` varbinary(4095), `tiny_blob` tinyblob, `normal_blob` blob, `medium_blob` mediumblob, `long_blob` longblob, `tiny_text` tinytext, `normal_text` text, `medium_text` mediumtext, `long_text` longtext) ENGINE=InnoDB[0m
+  [1m[35m (6.0ms)[0m  [1m[35mCREATE  INDEX `index_binary_fields_on_var_binary`  ON `binary_fields` (`var_binary`) [0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE `key_tests`[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE TABLE `key_tests` (`id` int AUTO_INCREMENT PRIMARY KEY, `awesome` varchar(255), `pizza` varchar(255), `snacks` varchar(255)) ENGINE=MyISAM[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE fulltext INDEX `index_key_tests_on_awesome`  ON `key_tests` (`awesome`) [0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_pizza` USING btree ON `key_tests` (`pizza`) [0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_snack`  ON `key_tests` (`snacks`) [0m
+  [1m[35m (1.4ms)[0m  [1m[35mDROP TABLE `collation_tests`[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE TABLE `collation_tests` (`string_cs_column` varchar(1) COLLATE utf8_bin, `string_ci_column` varchar(1) COLLATE utf8_general_ci) ENGINE=InnoDB[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS ten;
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE PROCEDURE ten() SQL SECURITY INVOKER
+BEGIN
+  select 10;
+END
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS topics;
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE PROCEDURE topics(IN num INT) SQL SECURITY INVOKER
+BEGIN
+  select * from topics limit num;
+END
+[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS `enum_tests`[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE TABLE enum_tests (
+  enum_column ENUM('text','blob','tiny','medium','long')
+)
+[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  `ar_internal_metadata`.* FROM `ar_internal_metadata` ORDER BY `ar_internal_metadata`.`key` ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT GET_LOCK('test_lock_name', 0);[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('test_lock_name')[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT @@GLOBAL.DEFAULT_WEEK_FORMAT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (0.8ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT RELEASE_LOCK('fake_lock_name')[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (45.9ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (1.2ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@GLOBAL.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35m (39.5ms)[0m  [1m[35mDROP TABLE `binary_fields`[0m
+  [1m[35m (63.4ms)[0m  [1m[35mCREATE TABLE `binary_fields` (`id` int AUTO_INCREMENT PRIMARY KEY, `var_binary` varbinary(255), `var_binary_large` varbinary(4095), `tiny_blob` tinyblob, `normal_blob` blob, `medium_blob` mediumblob, `long_blob` longblob, `tiny_text` tinytext, `normal_text` text, `medium_text` mediumtext, `long_text` longtext) ENGINE=InnoDB[0m
+  [1m[35m (5.7ms)[0m  [1m[35mCREATE  INDEX `index_binary_fields_on_var_binary`  ON `binary_fields` (`var_binary`) [0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE `key_tests`[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE TABLE `key_tests` (`id` int AUTO_INCREMENT PRIMARY KEY, `awesome` varchar(255), `pizza` varchar(255), `snacks` varchar(255)) ENGINE=MyISAM[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE fulltext INDEX `index_key_tests_on_awesome`  ON `key_tests` (`awesome`) [0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_pizza` USING btree ON `key_tests` (`pizza`) [0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_snack`  ON `key_tests` (`snacks`) [0m
+  [1m[35m (1.1ms)[0m  [1m[35mDROP TABLE `collation_tests`[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE TABLE `collation_tests` (`string_cs_column` varchar(1) COLLATE utf8_bin, `string_ci_column` varchar(1) COLLATE utf8_general_ci) ENGINE=InnoDB[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS ten;
+[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE PROCEDURE ten() SQL SECURITY INVOKER
+BEGIN
+  select 10;
+END
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS topics;
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE PROCEDURE topics(IN num INT) SQL SECURITY INVOKER
+BEGIN
+  select * from topics limit num;
+END
+[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS `enum_tests`[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE TABLE enum_tests (
+  enum_column ENUM('text','blob','tiny','medium','long')
+)
+[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.5ms)[0m  [1m[34mSELECT  `ar_internal_metadata`.* FROM `ar_internal_metadata` ORDER BY `ar_internal_metadata`.`key` ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (0.8ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (0.8ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@GLOBAL.DEFAULT_WEEK_FORMAT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35m (0.9ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('fake_lock_name')[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT GET_LOCK('test_lock_name', 0);[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('test_lock_name')[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@GLOBAL.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (1.1ms)[0m  [1m[35mDROP TABLE `binary_fields`[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE TABLE `binary_fields` (`id` int AUTO_INCREMENT PRIMARY KEY, `var_binary` varbinary(255), `var_binary_large` varbinary(4095), `tiny_blob` tinyblob, `normal_blob` blob, `medium_blob` mediumblob, `long_blob` longblob, `tiny_text` tinytext, `normal_text` text, `medium_text` mediumtext, `long_text` longtext) ENGINE=InnoDB[0m
+  [1m[35m (5.5ms)[0m  [1m[35mCREATE  INDEX `index_binary_fields_on_var_binary`  ON `binary_fields` (`var_binary`) [0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE `key_tests`[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE TABLE `key_tests` (`id` int AUTO_INCREMENT PRIMARY KEY, `awesome` varchar(255), `pizza` varchar(255), `snacks` varchar(255)) ENGINE=MyISAM[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE fulltext INDEX `index_key_tests_on_awesome`  ON `key_tests` (`awesome`) [0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_pizza` USING btree ON `key_tests` (`pizza`) [0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_snack`  ON `key_tests` (`snacks`) [0m
+  [1m[35m (1.2ms)[0m  [1m[35mDROP TABLE `collation_tests`[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE `collation_tests` (`string_cs_column` varchar(1) COLLATE utf8_bin, `string_ci_column` varchar(1) COLLATE utf8_general_ci) ENGINE=InnoDB[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS ten;
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE PROCEDURE ten() SQL SECURITY INVOKER
+BEGIN
+  select 10;
+END
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS topics;
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE PROCEDURE topics(IN num INT) SQL SECURITY INVOKER
+BEGIN
+  select * from topics limit num;
+END
+[0m
+  [1m[35m (0.6ms)[0m  [1m[35mDROP TABLE IF EXISTS `enum_tests`[0m
+  [1m[35m (16.0ms)[0m  [1m[35mCREATE TABLE enum_tests (
+  enum_column ENUM('text','blob','tiny','medium','long')
+)
+[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  `ar_internal_metadata`.* FROM `ar_internal_metadata` ORDER BY `ar_internal_metadata`.`key` ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@GLOBAL.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35m (0.7ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (0.7ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT GET_LOCK('test_lock_name', 0);[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('test_lock_name')[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('fake_lock_name')[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (0.6ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@GLOBAL.DEFAULT_WEEK_FORMAT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE `binary_fields`[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE `binary_fields` (`id` int AUTO_INCREMENT PRIMARY KEY, `var_binary` varbinary(255), `var_binary_large` varbinary(4095), `tiny_blob` tinyblob, `normal_blob` blob, `medium_blob` mediumblob, `long_blob` longblob, `tiny_text` tinytext, `normal_text` text, `medium_text` mediumtext, `long_text` longtext) ENGINE=InnoDB[0m
+  [1m[35m (6.2ms)[0m  [1m[35mCREATE  INDEX `index_binary_fields_on_var_binary`  ON `binary_fields` (`var_binary`) [0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE `key_tests`[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE TABLE `key_tests` (`id` int AUTO_INCREMENT PRIMARY KEY, `awesome` varchar(255), `pizza` varchar(255), `snacks` varchar(255)) ENGINE=MyISAM[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE fulltext INDEX `index_key_tests_on_awesome`  ON `key_tests` (`awesome`) [0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_pizza` USING btree ON `key_tests` (`pizza`) [0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_snack`  ON `key_tests` (`snacks`) [0m
+  [1m[35m (1.1ms)[0m  [1m[35mDROP TABLE `collation_tests`[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE `collation_tests` (`string_cs_column` varchar(1) COLLATE utf8_bin, `string_ci_column` varchar(1) COLLATE utf8_general_ci) ENGINE=InnoDB[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS ten;
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE PROCEDURE ten() SQL SECURITY INVOKER
+BEGIN
+  select 10;
+END
+[0m
+  [1m[35m (0.4ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS topics;
+[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE PROCEDURE topics(IN num INT) SQL SECURITY INVOKER
+BEGIN
+  select * from topics limit num;
+END
+[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS `enum_tests`[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE TABLE enum_tests (
+  enum_column ENUM('text','blob','tiny','medium','long')
+)
+[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  `ar_internal_metadata`.* FROM `ar_internal_metadata` ORDER BY `ar_internal_metadata`.`key` ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@GLOBAL.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT GET_LOCK('test_lock_name', 0);[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('test_lock_name')[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@GLOBAL.DEFAULT_WEEK_FORMAT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (0.9ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('fake_lock_name')[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (0.7ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35m (1.1ms)[0m  [1m[35mDROP TABLE `binary_fields`[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE TABLE `binary_fields` (`id` int AUTO_INCREMENT PRIMARY KEY, `var_binary` varbinary(255), `var_binary_large` varbinary(4095), `tiny_blob` tinyblob, `normal_blob` blob, `medium_blob` mediumblob, `long_blob` longblob, `tiny_text` tinytext, `normal_text` text, `medium_text` mediumtext, `long_text` longtext) ENGINE=InnoDB[0m
+  [1m[35m (5.8ms)[0m  [1m[35mCREATE  INDEX `index_binary_fields_on_var_binary`  ON `binary_fields` (`var_binary`) [0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE `key_tests`[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE TABLE `key_tests` (`id` int AUTO_INCREMENT PRIMARY KEY, `awesome` varchar(255), `pizza` varchar(255), `snacks` varchar(255)) ENGINE=MyISAM[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE fulltext INDEX `index_key_tests_on_awesome`  ON `key_tests` (`awesome`) [0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_pizza` USING btree ON `key_tests` (`pizza`) [0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_snack`  ON `key_tests` (`snacks`) [0m
+  [1m[35m (1.2ms)[0m  [1m[35mDROP TABLE `collation_tests`[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE TABLE `collation_tests` (`string_cs_column` varchar(1) COLLATE utf8_bin, `string_ci_column` varchar(1) COLLATE utf8_general_ci) ENGINE=InnoDB[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS ten;
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE PROCEDURE ten() SQL SECURITY INVOKER
+BEGIN
+  select 10;
+END
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS topics;
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE PROCEDURE topics(IN num INT) SQL SECURITY INVOKER
+BEGIN
+  select * from topics limit num;
+END
+[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE IF EXISTS `enum_tests`[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE enum_tests (
+  enum_column ENUM('text','blob','tiny','medium','long')
+)
+[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  `ar_internal_metadata`.* FROM `ar_internal_metadata` ORDER BY `ar_internal_metadata`.`key` ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@GLOBAL.DEFAULT_WEEK_FORMAT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35m (1.3ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (0.4ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@GLOBAL.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT GET_LOCK('test_lock_name', 0);[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('test_lock_name')[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('fake_lock_name')[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35m (1.4ms)[0m  [1m[35mDROP TABLE `binary_fields`[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE TABLE `binary_fields` (`id` int AUTO_INCREMENT PRIMARY KEY, `var_binary` varbinary(255), `var_binary_large` varbinary(4095), `tiny_blob` tinyblob, `normal_blob` blob, `medium_blob` mediumblob, `long_blob` longblob, `tiny_text` tinytext, `normal_text` text, `medium_text` mediumtext, `long_text` longtext) ENGINE=InnoDB[0m
+  [1m[35m (5.6ms)[0m  [1m[35mCREATE  INDEX `index_binary_fields_on_var_binary`  ON `binary_fields` (`var_binary`) [0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE `key_tests`[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE TABLE `key_tests` (`id` int AUTO_INCREMENT PRIMARY KEY, `awesome` varchar(255), `pizza` varchar(255), `snacks` varchar(255)) ENGINE=MyISAM[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE fulltext INDEX `index_key_tests_on_awesome`  ON `key_tests` (`awesome`) [0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_pizza` USING btree ON `key_tests` (`pizza`) [0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_snack`  ON `key_tests` (`snacks`) [0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE `collation_tests`[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE TABLE `collation_tests` (`string_cs_column` varchar(1) COLLATE utf8_bin, `string_ci_column` varchar(1) COLLATE utf8_general_ci) ENGINE=InnoDB[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS ten;
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE PROCEDURE ten() SQL SECURITY INVOKER
+BEGIN
+  select 10;
+END
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS topics;
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE PROCEDURE topics(IN num INT) SQL SECURITY INVOKER
+BEGIN
+  select * from topics limit num;
+END
+[0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE IF EXISTS `enum_tests`[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE TABLE enum_tests (
+  enum_column ENUM('text','blob','tiny','medium','long')
+)
+[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  `ar_internal_metadata`.* FROM `ar_internal_metadata` ORDER BY `ar_internal_metadata`.`key` ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35mSQL (0.9ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('fake_lock_name')[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@GLOBAL.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT GET_LOCK('test_lock_name', 0);[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('test_lock_name')[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (0.8ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@GLOBAL.DEFAULT_WEEK_FORMAT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (0.5ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35m (1.4ms)[0m  [1m[35mDROP TABLE `binary_fields`[0m
+  [1m[35m (14.0ms)[0m  [1m[35mCREATE TABLE `binary_fields` (`id` int AUTO_INCREMENT PRIMARY KEY, `var_binary` varbinary(255), `var_binary_large` varbinary(4095), `tiny_blob` tinyblob, `normal_blob` blob, `medium_blob` mediumblob, `long_blob` longblob, `tiny_text` tinytext, `normal_text` text, `medium_text` mediumtext, `long_text` longtext) ENGINE=InnoDB[0m
+  [1m[35m (5.4ms)[0m  [1m[35mCREATE  INDEX `index_binary_fields_on_var_binary`  ON `binary_fields` (`var_binary`) [0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE `key_tests`[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE TABLE `key_tests` (`id` int AUTO_INCREMENT PRIMARY KEY, `awesome` varchar(255), `pizza` varchar(255), `snacks` varchar(255)) ENGINE=MyISAM[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE fulltext INDEX `index_key_tests_on_awesome`  ON `key_tests` (`awesome`) [0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_pizza` USING btree ON `key_tests` (`pizza`) [0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE  INDEX `index_key_tests_on_snack`  ON `key_tests` (`snacks`) [0m
+  [1m[35m (1.0ms)[0m  [1m[35mDROP TABLE `collation_tests`[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE TABLE `collation_tests` (`string_cs_column` varchar(1) COLLATE utf8_bin, `string_ci_column` varchar(1) COLLATE utf8_general_ci) ENGINE=InnoDB[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS ten;
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE PROCEDURE ten() SQL SECURITY INVOKER
+BEGIN
+  select 10;
+END
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP PROCEDURE IF EXISTS topics;
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE PROCEDURE topics(IN num INT) SQL SECURITY INVOKER
+BEGIN
+  select * from topics limit num;
+END
+[0m
+  [1m[35m (1.1ms)[0m  [1m[35mDROP TABLE IF EXISTS `enum_tests`[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE enum_tests (
+  enum_column ENUM('text','blob','tiny','medium','long')
+)
+[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT  `ar_internal_metadata`.* FROM `ar_internal_metadata` ORDER BY `ar_internal_metadata`.`key` ASC LIMIT ?[0m  [["LIMIT", 1]]
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (0.9ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT @@GLOBAL.DEFAULT_WEEK_FORMAT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT GET_LOCK('test_lock_name', 0);[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('test_lock_name')[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT IS_FREE_LOCK('test_lock_name');[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT id, data FROM ex WHERE id = ?[0m  [["id", 1]]
+  [1m[35m (0.7ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[34mSELECT @@SESSION.DEFAULT_WEEK_FORMAT[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@GLOBAL.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE TABLE ex(      `id` int auto_increment PRIMARY KEY,
+      `data` varchar(255)
+)[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO ex (id, data) VALUES (1, "foo")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT id, data FROM ex[0m
+  [1m[35m (1.2ms)[0m  [1m[35mDROP TABLE ex[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mset @@wait_timeout=1[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT RELEASE_LOCK('fake_lock_name')[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[34mSELECT @@SESSION.sql_mode[0m

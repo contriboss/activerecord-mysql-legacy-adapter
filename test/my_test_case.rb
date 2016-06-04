@@ -20,17 +20,19 @@ module ValidationsRepairHelper
 end
 
 class ActiveSupport::TestCase
-  # include ActiveRecord::TestFixtures
+  include ActiveRecord::TestFixtures
   include ValidationsRepairHelper
   # include ActiveSupport::Testing::MethodCallAssertions
 
-  # self.fixture_path = FIXTURES_ROOT
-  # self.use_instantiated_fixtures  = false
-  # self.use_transactional_tests = true
+  fixtures_root = File.expand_path('../fixtures', __FILE__)
 
-  # def create_fixtures(*fixture_set_names, &block)
-  #   ActiveRecord::FixtureSet.create_fixtures(ActiveSupport::TestCase.fixture_path, fixture_set_names, fixture_class_names, &block)
-  # end
+  self.fixture_path = fixtures_root
+  self.use_instantiated_fixtures  = false
+  self.use_transactional_tests = true
+
+  def create_fixtures(*fixture_set_names, &block)
+    ActiveRecord::FixtureSet.create_fixtures(ActiveSupport::TestCase.fixture_path, fixture_set_names, fixture_class_names, &block)
+  end
 end
 
 class SQLCounter
